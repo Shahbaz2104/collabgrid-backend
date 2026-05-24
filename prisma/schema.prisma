@@ -12,5 +12,39 @@ model User {
   email     String   @unique
   password  String
   role      String   @default("Member")
+  boards    Board[]
   createdAt DateTime @default(now())
+}
+
+
+model Board {
+  id        Int      @id @default(autoincrement())
+  name      String
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  columns   Column[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Column {
+  id        Int      @id @default(autoincrement())
+  name      String
+  position  Int      // Keeps track of column arrangement order (0, 1, 2...)
+  boardId   Int
+  board     Board    @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  tasks     Task[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Task {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  position    Int      // Sort order position inside a specific column
+  columnId    Int
+  column      Column   @relation(fields: [columnId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }

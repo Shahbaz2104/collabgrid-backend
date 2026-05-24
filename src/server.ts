@@ -2,9 +2,11 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
-import prisma from './db'; // <-- Import the centralized db instance
+import prisma from './db'; 
 import authRoutes from './routes/authRoutes';
 import userRoutes from './routes/userRoutes';
+import boardRoutes from './routes/boardRoutes';
+import taskRoutes from './routes/taskRoutes';
 
 dotenv.config();
 
@@ -18,6 +20,8 @@ app.use(express.json());
 // --- Mount Routes ---
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/boards', boardRoutes);
+app.use('/api/tasks', taskRoutes);
 
 // Health-Check Route
 app.get('/health', async (req: Request, res: Response) => {
